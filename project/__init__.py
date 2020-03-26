@@ -1,7 +1,9 @@
-from flask import Flask, jsonify
+from flask import Flask
 from flask_rest_jsonapi import Api, ResourceDetail, ResourceList, ResourceRelationship
 import os
 from flask_sqlalchemy import SQLAlchemy
+from marshmallow_jsonapi import fields
+from marshmallow_jsonapi.flask import Schema
 
 # instantiate the app
 app = Flask(__name__)
@@ -16,25 +18,48 @@ app.config.from_object(app_settings)
 db = SQLAlchemy(app)
 
 
-# model
-class User(db.Model):  # new
-    __tablename__ = 'users'
+class Todo(db.Model):
+    __tablename__ = 'todos'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    username = db.Column(db.String(128), nullable=False)
-    email = db.Column(db.String(128), nullable=False)
-    active = db.Column(db.Boolean(), default=True, nullable=False)
+    name = db.Column(db.String(128), nullable=False)
+    state = db.Column(db.Boolean(), default=True, nullable=False)
 
-    def __init__(self, username, email):
-        self.username = username
-        self.email = email
-
-
-class Todo(ResourceList):
-    def get(self):
-        return {
-            'status': 'success',
-            'message': 'todo!'
-        }
+    def __init__(self, name, state):
+        self.name = name
+        self.state = state
 
 
-api.route(Todo, 'todo_list', '/todo')
+db.create_all()
+
+
+# Create logical data abstraction (same as data storage for this first example)
+class TodoSchema(Schema):
+    class Meta:
+        type_ = 'todo'
+        self_view = 'todo_detail'
+        self_view_kwargs = {'id': '<id>'}
+
+    id = fields.Integer(dump_only=True)
+    name = fields.Str()
+    state = fields.Bool()
+
+
+# Create resource managers
+class TodoList(ResourceList):
+    schema = TodoSchema
+    data_layer = {'session': db.session,
+                  'model': Todo}
+
+
+class TodoDetail(ResourceDetail):
+    schema = TodoSchema
+    data_layer = {'session': db.session,
+                  'model': Todo}
+
+
+api.route(TodoList, 'todo_list', '/todos')
+api.route(TodoDetail, 'todo_detail', '/todos/<int:id>')
+
+#########################################################
+
+# application/vnd.api+json
