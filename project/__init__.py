@@ -59,7 +59,3 @@ class TodoDetail(ResourceDetail):
 
 api.route(TodoList, 'todo_list', '/todos')
 api.route(TodoDetail, 'todo_detail', '/todos/<int:id>')
-
-#########################################################
-
-# application/vnd.api+json
