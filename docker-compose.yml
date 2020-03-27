@@ -12,15 +12,15 @@ services:
     ports:
       - 5000:5000
     environment:
-      - FLASK_APP=project/__init__.py
+#      - FLASK_APP=project/__init__.py
       - FLASK_ENV=development
       - APP_SETTINGS=project.config.DevelopmentConfig
-      - DATABASE_URL=postgresql://postgres:postgres@users-db:5432/todos_dev
-      - DATABASE_TEST_URL=postgresql://postgres:postgres@users-db:5432/todos_test
+      - DATABASE_URL=postgresql://postgres:postgres@todos-db:5432/todos_dev
+      - DATABASE_TEST_URL=postgresql://postgres:postgres@todos-db:5432/todos_test
     depends_on:
-      - users-db
+      - todos-db
 
-  users-db:
+  todos-db:
     build:
       context: ./project/db_creation
       dockerfile: Dockerfile

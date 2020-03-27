@@ -2,9 +2,7 @@ from flask_rest_jsonapi import ResourceList, ResourceDetail, Api
 from marshmallow_jsonapi import fields
 from marshmallow_jsonapi.flask import Schema
 from project.models.todo import Todo
-from project.database import app, db
-
-api = Api(app)
+from project.database import db
 
 
 class TodoSchema(Schema):
@@ -31,7 +29,8 @@ class TodoDetail(ResourceDetail):
                   'model': Todo}
 
 
-def register_api():
-    db.create_all()
+def register_api(app):
+    api = Api(app)
+    db.create_all(app=app)
     api.route(TodoList, 'todo_list', '/todos')
     api.route(TodoDetail, 'todo_detail', '/todos/<int:id>')
