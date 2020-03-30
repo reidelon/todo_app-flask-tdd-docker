@@ -63,12 +63,12 @@ def test_filter_todo_in_done(test_app, test_database):
     create_in_done_or_todo(client, done, todo_name, count_todo)
     filter = "true"
     resp = client.get(
-        "todos?filter[state]=" + filter,
+        "todos?filter[done]=" + filter,
         content_type='application/json',
     )
     data = json.loads(resp.data.decode())
     dormir_list = [item for item in data['data'] if
-                   item['attributes']['name'] == done_name and item['attributes']['state']]
+                   item['attributes']['name'] == done_name and item['attributes']['done']]
     assert resp.status_code == 200
     assert len(dormir_list) == count_done
 
@@ -86,12 +86,12 @@ def test_filter_todo_in_todo(test_app, test_database):
     create_in_done_or_todo(client, done, todo_name, count_todo)
     filter = "false"
     resp = client.get(
-        "todos?filter[state]=" + filter,
+        "todos?filter[done]=" + filter,
         content_type='application/json',
     )
     data = json.loads(resp.data.decode())
     dormir_list = [item for item in data['data'] if
-                   item['attributes']['name'] == todo_name and item['attributes']['state'] is False]
+                   item['attributes']['name'] == todo_name and item['attributes']['done'] is False]
     assert resp.status_code == 200
     assert len(dormir_list) == count_todo
 
@@ -104,7 +104,7 @@ def create_in_done_or_todo(client, done, todo_name, count):
 def create_todo(client, todo_name, done=False):
     resp = client.post(
         '/todos',
-        data=json.dumps({"data": {"type": "todo", "attributes": {"name": todo_name, "state": done}}}),
+        data=json.dumps({"data": {"type": "todo", "attributes": {"name": todo_name, "done": done}}}),
         content_type='application/json',
     )
     data = json.loads(resp.data.decode())

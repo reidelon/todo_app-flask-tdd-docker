@@ -3,3 +3,4 @@ flask-rest-jsonapi==0.30.1
 Flask-SQLAlchemy==2.4.1
 psycopg2-binary==2.8.4
 pytest==5.4.1
+Flask-Migrate
