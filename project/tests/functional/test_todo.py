@@ -1,8 +1,5 @@
 import json
 
-base_url = 'http://localhost:5000/'
-headers = {'Accept': 'application/vnd.api+json', 'Content-Type': 'application/vnd.api+json'}
-
 
 def test_list_todo(test_app, test_database):
     client = test_app.test_client()
