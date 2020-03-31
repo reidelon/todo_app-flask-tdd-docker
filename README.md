@@ -68,6 +68,14 @@ DELETE /todos/`X` HTTP/1.1
 
 Accept: application/vnd.api+json
 
+`Filter`
+
+GET /todos?filter[done]=false HTTP/1.1
+
+Accept: application/vnd.api+json
+
+`Note` any other combination can be made for filtering [read here](https://flask-rest-jsonapi.readthedocs.io/en/latest/filtering.html)
+
 ### Prerequisites
 
 [Docker](https://www.docker.com/)
