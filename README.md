@@ -84,7 +84,7 @@ Accept: application/vnd.api+json
 
 docker-compose exec web python -m pytest "project/tests"
 
-### Break down into end to end tests
+### Test details
 
 There are 6 functional test about and 3 unit test.
 
