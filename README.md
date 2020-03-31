@@ -89,17 +89,27 @@ docker-compose exec web python -m pytest "project/tests"
 There are 6 functional test about and 3 unit test.
 
 Functional test:
+
 test_list_todo
+
 test_add_todo
+
 test_delete_todo
+
 test_update_todo
+
 test_filter_todo_in_done
+
 test_filter_todo_in_todo
 
 Unit test:
+
 test_development_config
+
 test_testing_config
+
 test_production_config
+
 
 
 ## Technology
