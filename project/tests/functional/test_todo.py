@@ -3,7 +3,7 @@ import json
 
 def test_list_todo(test_app, test_database):
     client = test_app.test_client()
-    todo_name = 'tarea'
+    todo_name = 'task'
     done = False
     count_todo = 10
     create_in_done_or_todo(client, done, todo_name, count_todo)
@@ -12,7 +12,9 @@ def test_list_todo(test_app, test_database):
     )
     assert resp.status_code == 200
     data = json.loads(resp.data.decode())
-    assert len(data['data']) == count_todo
+    task_list = [item for item in data['data'] if
+                  item['attributes']['name'] == todo_name and item['attributes']['done'] is False]
+    assert len(task_list) == count_todo
 
 
 def test_add_todo(test_app, test_database):
